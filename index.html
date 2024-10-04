@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge;chrome=1">
+    <title>LaunchDarkly Demo</title>
+    <script src="https://unpkg.com/launchdarkly-js-client-sdk@3"></script>
+    <link rel="stylesheet" href="./index.css">
+  </head>
+  <body>
+    <h1>Would you like to purchase this car?</h1>
+
+    <!-- This image will change based on the feature flag value -->
+    <div id="feature-section">
+      <img id="feature-image" src="" width="400px" height="auto">
+    </div>
+
+    <!-- Purchase button -->
+    <div id="purchase-section" style="margin-top: 20px;">
+      <button id="purchase-button" style="display: none;">💲 Purchase This Car</button>
+    </div>
+
+    <script>
+      function main() {
+        // Setting LD clientSideID
+        const clientSideID = '66febf1df285a4083b1988ef';
+
+        // Setting flagKeys
+        const flagKeyPurchaseButton = 'new-purchase-button';
+        const flagKeyImageVariation = 'ferrari-image-variation';
+
+        // Setting the user object
+        const context = {
+          kind: 'user',
+          key: 'user-dd',
+          name: 'Keegan Smeedy',
+          location: 'US',
+          role: 'admin',
+          age: 27,
+          interests: ['cars', 'technology'],
+          favoriteColor: 'red'
+        };
+
+        const ldclient = LDClient.initialize(clientSideID, context);
+
+        // Function to render the correct image and button behavior based on the feature flag values
+        function render() {
+          const flagValuePurchaseButton = ldclient.variation(flagKeyPurchaseButton, true);  // Purchase button flag
+          const flagValueImageVariation = ldclient.variation(flagKeyImageVariation, true);  // Image variation flag
+
+          const img = document.getElementById('feature-image');
+          const purchaseBtn = document.getElementById('purchase-button');
+
+          // Control the Ferrari image based on 'ferrari-image-variation' flag
+          if (flagValueImageVariation) {
+            img.src = 'https://media-cldnry.s-nbcnews.com/image/upload/t_fit-1240w,f_auto,q_auto:best/newscms/2015_06/876221/trequarti_basso.jpg'; // Ferrari Red
+            img.alt = 'Ferrari Red';
+          } else {
+            img.src = 'https://cdn.ferrari.com/cms/network/media/img/resize/6093c24cef0edd50a7434d90-ferrari-magazine-buijPJtX-p.jpg'; // Ferrari Blue
+            img.alt = 'Ferrari Blue';
+          }
+
+          // Simulate a bad release for the button based on 'new-purchase-button' flag
+          if (flagValuePurchaseButton) {
+            // Version A: Normal button
+            purchaseBtn.style.display = 'inline';
+            purchaseBtn.style.pointerEvents = 'auto'; // Enable click functionality
+            purchaseBtn.style.opacity = '1'; // Reset opacity
+            purchaseBtn.style.cursor = 'pointer'; // Reset cursor
+            purchaseBtn.innerText = '💲 Purchase This Car';
+          } else {
+            // Version B: Broken button
+            purchaseBtn.style.display = 'inline';
+            purchaseBtn.style.pointerEvents = 'none'; // Disable click functionality
+            purchaseBtn.style.opacity = '0.3'; // Broken appearance
+            purchaseBtn.style.cursor = 'not-allowed'; // Change cursor to not-allowed
+            purchaseBtn.innerText = '💲 Purchase Button Broken';
+          }
+        }
+
+        // Handle purchase button click and track the event in LaunchDarkly
+        document.getElementById('purchase-button').addEventListener('click', () => {
+          alert('You clicked the purchase button!');
+
+          // Track the event in LaunchDarkly for the experiment
+          const ferrariColor = ldclient.variation('ferrari-image-variation', true) ? 'red' : 'blue';
+          ldclient.track('Ferrari Purchase Clicks', { color: ferrariColor });
+        });
+
+        // LaunchDarkly event listeners
+        ldclient.on('initialized', () => {
+          div.replaceChild(
+            document.createTextNode('SDK successfully initialized!'),
+            div.firstChild
+          );
+        });
+        ldclient.on('failed', () => {
+          div.replaceChild(
+            document.createTextNode('SDK failed to initialize'),
+            div.firstChild
+          );
+        });
+        ldclient.on('ready', render);
+        ldclient.on('change', render);
+      }
+      main();
+    </script>
+  </body>
+</html>
