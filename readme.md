@@ -11,7 +11,7 @@ This project demonstrates the use of LaunchDarkly for implementing feature flags
 
 ### 1. Clone the repository
    ```
-   git clone https://github.com/your-username/launchdarkly-demo.git
+   git clone https://github.com/keegansheedy/launchdarkly-demo.git
    cd launchdarkly-demo
    ```
 
