@@ -27,6 +27,6 @@ This project demonstrates the use of LaunchDarkly for implementing feature flags
 - new-purchase-button: Showcases development team rolling out new purchase button, but it's broken! Used to demo rolling out a new feature and reverting a broken release.  
   
 
-   Experiments Utilized:
+ Experiments Utilized:
 - Ferrari Color Experiment: Used to test hypothesis that users are more likely to buy a Ferrari if it is blue
    
