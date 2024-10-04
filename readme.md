@@ -23,9 +23,12 @@ This project demonstrates the use of LaunchDarkly for implementing feature flags
 ### 3. Navigate to Keegan's LD account (keegansheedy@gmail.com) (Assuming you have admin access!)
    ```
    Flags Utilized:
-   -ferrari-image-variation: Showcases switching between red and blue ferrari's. Will be used to demo user targeting, custom attribute targeting and experimentation. 
-   -new-purchase-button: Showcases development team rolling out new purchase button, but it's broken! Used to demo rolling out a new feature and reverting a broken release.  
-
-   Experiments Utilized:
-   -Ferrari Color Experiment: Used to test hypothesis that users are more likely to buy a Ferrari if it is blue
    ```
+- ferrari-image-variation: Showcases switching between red and blue ferrari's. Will be used to demo user targeting, custom attribute targeting and experimentation. 
+- new-purchase-button: Showcases development team rolling out new purchase button, but it's broken! Used to demo rolling out a new feature and reverting a broken release.  
+  
+   ```
+   Experiments Utilized:
+   ```
+- Ferrari Color Experiment: Used to test hypothesis that users are more likely to buy a Ferrari if it is blue
+   
